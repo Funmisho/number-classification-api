@@ -21,6 +21,7 @@ GET https://<your-api-id>.execute-api.us-east-1.amazonaws.com/number-classificat
     "digit_sum": 11,
     "fun_fact": "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371"
 }
+```
 Example Response (400 Bad Request):
 
 {
