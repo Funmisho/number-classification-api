@@ -54,9 +54,9 @@ git clone https://github.com/your-username/number-classification-api.git
 cd number-classification-api
 ```
 2. Install dependencies:
-3. ```bash
-- pip install -r requirements.txt
-- ```
+```bash
+ pip install -r requirements.txt
+```
 3.Deploy using Zappa:
 - First, configure Zappa with `zappa init`.
 - Then, deploy your app using `zappa deploy`.
