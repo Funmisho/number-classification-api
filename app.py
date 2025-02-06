@@ -18,9 +18,11 @@ def is_prime(n):
 
 # Function to check if a number is perfect
 def is_perfect(n):
-    if n < 1 or n % 1 != 0:  # Exclude floats and negative numbers
+    if n < 1 or not n.is_integer():  # Ensure it's a positive integer
         return False
+    n = int(n)  # Convert float to int before using range
     return sum(i for i in range(1, n) if n % i == 0) == n
+
 
 # Function to check if a number is an Armstrong number
 def is_armstrong(n):
@@ -73,7 +75,6 @@ def classify_number():
     ])
 
     return jsonify(response), 200  # Always return 200 for valid numbers
-
 
 
   
