@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import math
@@ -8,7 +8,7 @@ from collections import OrderedDict
 app = Flask(__name__)
 CORS(app)
 
-
+   
 # Function to check if a number is prime
 def is_prime(n):
     if n < 2:
@@ -44,9 +44,12 @@ def classify_number():
      # Validate input: Check if input is None or contains any non-digit characters
     if number is None or not number.lstrip("-").isdigit():
         error_response = OrderedDict([("number", number), ("error", True)])
-        return Response(jsonify(error_response).data, status=400, mimetype="application/json")
+        return jsonify(error_response), 400  # Return JSON with 400 status code
     
     number = int(number)  # Convert to integer
+
+    if number < 0:
+        return jsonify({"number": number, "error": "Negative numbers are not supported"}), 400
 
 
 
@@ -73,7 +76,7 @@ def classify_number():
         ("fun_fact", fun_fact)
     ])
 
-    return Response(jsonify(response).data, status=200, mimetype="application/json")
+    return jsonify(response), 200  # Return JSON with 200 status code
 
 
 
