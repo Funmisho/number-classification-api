@@ -1,10 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import requests
 import math
+from collections import OrderedDict
+
 
 app = Flask(__name__)
 CORS(app)
+
 
 # Function to check if a number is prime
 def is_prime(n):
@@ -17,7 +20,7 @@ def is_prime(n):
 
 # Function to check if a number is perfect
 def is_perfect(n):
-    return n > 1 and sum(i for i in range(1, n) if n % 1 == 0) == n
+    return n > 1 and sum(i for i in range(1, n) if n % i == 0) == n
 
 # Function to check if a number is an Armstrong number
 def is_armstrong(n):
@@ -38,11 +41,14 @@ def get_fun_fact(n):
 def classify_number():
     number = request.args.get('number')
 
-    # Validate input
-    if not number or not number.isdigit():
-        return jsonify({"number": number, "error": True}), 400
+     # Validate input: Check if input is None or contains any non-digit characters
+    if number is None or not number.lstrip("-").isdigit():
+        error_response = OrderedDict([("number", number), ("error", True)])
+        return Response(jsonify(error_response).data, status=400, mimetype="application/json")
+    
+    number = int(number)  # Convert to integer
 
-    number = int(number)
+
 
     # Determine properties
     prime_status = is_prime(number)
@@ -57,17 +63,17 @@ def classify_number():
     # Get fun fact
     fun_fact = get_fun_fact(number)
 
-    # Prepare response
-    response = {
-        "number": number,
-        "is_prime": prime_status,
-        "is_perfect": perfect_status,
-        "properties": properties,
-        "digit_sum": digit_sum(number),
-        "fun_fact": fun_fact
-    }
+   # Prepare response
+    response = OrderedDict([
+        ("number", number),
+        ("is_prime", prime_status),
+        ("is_perfect", perfect_status),
+        ("properties", properties),
+        ("digit_sum", digit_sum(number)),
+        ("fun_fact", fun_fact)
+    ])
 
-    return jsonify(response), 200
+    return Response(jsonify(response).data, status=200, mimetype="application/json")
 
 
 
